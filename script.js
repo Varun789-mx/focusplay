@@ -1,44 +1,55 @@
-document.getElementById("toggleBtn").addEventListener("click", togglePause);
+chrome.tab.onActivated.addListener(async (activeInfo) => {
+  const tab = await chrome.tab.get(activeInfo.tabId);
+  await handleTabSwitch(tab);
+});
 
-async function getCurrentTabInfo() {
-  const tab = await chrome.tabs.query({ currentWindow: true });
-  tab.forEach((tab) => {
-    console.log(`You are currently viewing: ${tab.title} (${tab.url})`);
-  });
-
-  return tab;
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (changeInfo.status === "complete" && tab.url?.includes("youtube.com")) {
+    await handleTabSwitch(tab);
+  }
+});
+async function pauseAllYouTubeTabs() {
+  const allTabs = await chrome.tabs.query({});
+  for (const tab of allTabs) {
+    if (tab?.url?.includes("youtube.com")) {
+      await pauseVideo(tab.id);
+    }
+  }  
 }
 
-async function togglePause() {
-  const ButtonText = document.getElementById("toggleBtn");
-  if (ButtonText.textContent === "Active") {
-    let tabs = await getCurrentTabInfo();
-    tabs.forEach((tab) => {
-      console.log(tab.url);
-      if (tab.url.includes("youtube.com")) {
-        if(tab.active) return;
-        chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          function: (isActive) => {
-            const video = document.querySelector(`.html5-main-video`);
-            if (!video) return;
-            if (isActive && video.paused) {
-              video.play();
-              console.log("Video played ", tab.url);
-            }
-            if (!isActive && !video.paused) {
-              video.pause();
-              console.log("Video paused ", tab.url);
-            }
-          },
-          args: [tab.active],
-        });
-      }
-    });
-    ButtonText.textContent = "Inactive";
-  } else {
-    ButtonText.textContent = "Active";
-  }
+async function handleTabSwitch(activeTab) {
+  const allTabs = await chrome.tabs.query({});
 
-  console.log("from click");
+  for (const tab of allTabs) {
+    if (!tab.url?.includes("youtube.com")) continue;
+    if (tab.id === activeTab.id && tab?.url?.includes("youtube.com")) {
+      await playVideo(tab.id);
+    } else {
+      await pauseAllYouTubeTabs(tab.id);
+    }
+  }
+}
+
+async function playVideo(tabId) {
+  return chrome.scripting.executeScript({
+    target: { tabId },
+    function: () => {
+      const video = document.querySelector(".html5-main-video");
+      if (video && video.paused) {
+        await video.play();
+      }
+    }
+  })
+}
+
+async function pauseVideo(tabId) {
+  return chrome.scripting.executeScript({
+    target: { tabId },
+    function: () => {
+      const video = document.querySelector(".html5-main-video");
+      if (video && !video.paused) {
+        await video.pause();
+      }
+    }
+  })
 }
