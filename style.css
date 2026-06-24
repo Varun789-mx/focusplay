@@ -1,14 +1,62 @@
-*{
-    padding:0%;
-    margin: 0%;
+* {
+  margin: 0%;
+  padding: 0%;
 }
-#main { 
-    width: 300px;
-    height: 500px;
-    margin: 0;
-    padding: 0;
-    background: black;
-    color: white;
-    font: 500;
-    text-emphasis-color: white;
-} 
+.main {
+  margin: 10px;
+  height: 50%;
+  width: 300px;
+  height: 350px;
+}
+.head {
+  display: inline-flex;
+  margin: 10px;
+  padding: 4px;
+  justify-content: space-evenly;
+}
+.headtext {
+    padding:5px;
+    margin:2px;
+}
+.pill {
+  /* Essential Pill Shape Mechanism */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px; /* Force perfect rounded ends */
+
+  /* Sizing and Layout */
+  padding: 8px 16px; /* Horizontal padding should exceed vertical padding */
+  white-space: nowrap; /* Prevents text from breaking into lines */
+
+  /* Typography & Presentation */
+  font-family: system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+
+  /* Aesthetics (Customizable) */
+  background-color: #ff6200e4;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+
+  /* Smooth interaction transition */
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+/* Hover Interaction State */
+.pill:hover {
+  background-color: #b34a08;
+}
+
+/* Focus State for Web Accessibility */
+.pill:focus-visible {
+  outline: 3px solid #b3d7ff;
+}
+
+/* Active Press State */
+.pill:active {
+  transform: scale(0.97);
+}
