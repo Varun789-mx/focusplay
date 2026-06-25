@@ -1,5 +1,5 @@
-chrome.tab.onActivated.addListener(async (activeInfo) => {
-  const tab = await chrome.tab.get(activeInfo.tabId);
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const tab = await chrome.tabs.get(activeInfo.tabId);
   await handleTabSwitch(tab);
 });
 
@@ -14,7 +14,7 @@ async function pauseAllYouTubeTabs() {
     if (tab?.url?.includes("youtube.com")) {
       await pauseVideo(tab.id);
     }
-  }  
+  }
 }
 
 async function handleTabSwitch(activeTab) {
@@ -25,31 +25,41 @@ async function handleTabSwitch(activeTab) {
     if (tab.id === activeTab.id && tab?.url?.includes("youtube.com")) {
       await playVideo(tab.id);
     } else {
-      await pauseAllYouTubeTabs(tab.id);
+      await pauseAllYouTubeTabs();
     }
   }
 }
 
+chrome.windows.onFocusChanged.addListener(async (windowId) => {
+  if (windowId === chrome.windows.WINDOW_ID_NONE) {
+    const allTabs = await chrome.tabs.query({});
+    for (const tab of allTabs) {
+      if (tab.url?.includes("youtube.com")) {
+        await pauseVideo(tab.id);
+      }
+    }
+  }
+});
 async function playVideo(tabId) {
   return chrome.scripting.executeScript({
     target: { tabId },
-    function: () => {
+    function: async () => {
       const video = document.querySelector(".html5-main-video");
       if (video && video.paused) {
         await video.play();
       }
-    }
-  })
+    },
+  });
 }
 
 async function pauseVideo(tabId) {
   return chrome.scripting.executeScript({
     target: { tabId },
-    function: () => {
+    function: async () => {
       const video = document.querySelector(".html5-main-video");
       if (video && !video.paused) {
         await video.pause();
       }
-    }
-  })
+    },
+  });
 }

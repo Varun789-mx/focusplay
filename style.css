@@ -3,20 +3,28 @@
   padding: 0%;
 }
 .main {
-  margin: 10px;
-  height: 50%;
-  width: 300px;
-  height: 350px;
+height: 200px;
+  width: 500px;
+  border: 0%;
+  color: white;
+  background-color: #131426;
+ 
+  color:white;
 }
 .head {
-  display: inline-flex;
-  margin: 10px;
-  padding: 4px;
+  display: flex;
+  margin: 0%;
   justify-content: space-evenly;
 }
 .headtext {
-    padding:5px;
-    margin:2px;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+.second{ 
+   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .pill {
   /* Essential Pill Shape Mechanism */
@@ -26,7 +34,7 @@
   border-radius: 9999px; /* Force perfect rounded ends */
 
   /* Sizing and Layout */
-  padding: 8px 16px; /* Horizontal padding should exceed vertical padding */
+  padding: 4px 8px; /* Horizontal padding should exceed vertical padding */
   white-space: nowrap; /* Prevents text from breaking into lines */
 
   /* Typography & Presentation */
