@@ -1,3 +1,4 @@
+let focusActive = false;
 chrome.storage.local.get("focusActive", (data) => {
   focusActive = data.focusActive ?? false;
 });
@@ -5,18 +6,22 @@ chrome.storage.local.get("focusActive", (data) => {
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === "TOGGLE") {
     focusActive = message.active;
-  }
-  if (!focusActive) {
-    pauseAllYouTubeTabs();
+    if (!focusActive) {
+      pauseAllYouTubeTabs();
+    }
   }
 });
 
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const { focusActive } = await chrome.storage.local.get("focusActive");
+  if (!focusActive) return;
   const tab = await chrome.tabs.get(activeInfo.tabId);
   await handleTabSwitch(tab);
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  const { focusActive } = await chrome.storage.local.get("focusActive");
+  if (!focusActive) return;
   if (changeInfo.status === "complete" && tab.url?.includes("youtube.com")) {
     await handleTabSwitch(tab);
   }
@@ -35,15 +40,19 @@ async function handleTabSwitch(activeTab) {
 
   for (const tab of allTabs) {
     if (!tab.url?.includes("youtube.com")) continue;
+    const { focusActive } = await chrome.storage.local.get("focusActive");
+    if (!focusActive) return;
     if (tab.id === activeTab.id && tab?.url?.includes("youtube.com")) {
       await playVideo(tab.id);
     } else {
-      await pauseAllYouTubeTabs();
+      await pauseVideo(tab.id);
     }
   }
 }
 
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
+   const { focusActive } = await chrome.storage.local.get("focusActive");
+    if (!focusActive) return;
   if (windowId === chrome.windows.WINDOW_ID_NONE) {
     const allTabs = await chrome.tabs.query({});
     for (const tab of allTabs) {

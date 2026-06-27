@@ -9,9 +9,68 @@
   width: 350px;
   background-color: #131426;
   color: white;
+  overflow: hidden;
+}
+
+#list {
+  list-style: none;
+  padding: 8px 12px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+#list::-webkit-scrollbar {
+  width: 4px;
+}
+
+#list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  font-family: system-ui, sans-serif;
+  font-size: 12px;
+  color: #e5e7eb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+  transition: background-color 0.15s ease;
+}
+
+#list li:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Playing indicator dot — add class "playing" via JS */
+#list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #4b5563;
+  flex-shrink: 0;
+}
+
+#list li.playing::before {
+  background-color: #22c55e;
 }
 
 .head {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 12px 0;
+}
+
+.btn {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -28,6 +87,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: calc(100% - 53px); 
 }
 
 #toggleBtn {
