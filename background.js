@@ -1,3 +1,16 @@
+chrome.storage.local.get("focusActive", (data) => {
+  focusActive = data.focusActive ?? false;
+});
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type === "TOGGLE") {
+    focusActive = message.active;
+  }
+  if (!focusActive) {
+    pauseAllYouTubeTabs();
+  }
+});
+
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   const tab = await chrome.tabs.get(activeInfo.tabId);
   await handleTabSwitch(tab);
@@ -51,7 +64,6 @@ async function playVideo(tabId) {
     },
   });
 }
-
 async function pauseVideo(tabId) {
   return chrome.scripting.executeScript({
     target: { tabId },

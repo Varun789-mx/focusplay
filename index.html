@@ -7,19 +7,20 @@
     <title>Focus Play</title>
     <link rel="stylesheet" href="style.css" />
     <script src="popup.js" defer></script>
-    </script>
 </head>
 
 <body>
     <div class="main">
         <div class="head">
             <p class="headtext">Focus Manager</p>
-            <p class="pill">Active</p>
+            <p class="pill" id="pill">Active</p>
+        </div>
+        <div class="btn">
+            <button id="toggleBtn">Enable</button>
         </div>
         <div class="second">
-            <h3 id="playlistheader">YOUTUBE TABS</h3>
-            <ul id="list">
-            </ul>
+            <h3 id="playlistheader">ACTIVE TABS</h3>
+            <ul id="list"></ul>
         </div>
     </div>
 </body>

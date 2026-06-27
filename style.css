@@ -1,70 +1,111 @@
 * {
-  margin: 0%;
-  padding: 0%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
 .main {
-height: 200px;
-  width: 500px;
-  border: 0%;
-  color: white;
+  height: 200px;
+  width: 350px;
   background-color: #131426;
- 
-  color:white;
+  color: white;
 }
+
 .head {
   display: flex;
-  margin: 0%;
+  align-items: center;
   justify-content: space-evenly;
+  padding: 12px 0;
 }
+
 .headtext {
-    font-size: 25px;
-    font-weight: bold;
-    color: white;
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
 }
-.second{ 
-   display: flex;
+
+.second {
+  display: flex;
   flex-direction: column;
   align-items: center;
 }
-.pill {
-  /* Essential Pill Shape Mechanism */
+
+#toggleBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px; /* Force perfect rounded ends */
+  gap: 6px;
 
-  /* Sizing and Layout */
-  padding: 4px 8px; /* Horizontal padding should exceed vertical padding */
-  white-space: nowrap; /* Prevents text from breaking into lines */
-
-  /* Typography & Presentation */
-  font-family: system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-
-  /* Aesthetics (Customizable) */
-  background-color: #ff6200e4;
-  color: #ffffff;
+  margin-top: 12px;
+  padding: 8px 20px;
+  border-radius: 9999px;
   border: none;
+
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
   cursor: pointer;
 
-  /* Smooth interaction transition */
+  background-color: #ff6200e4;
+  color: #ffffff;
+
   transition:
     background-color 0.2s ease,
     transform 0.1s ease;
 }
 
-/* Hover Interaction State */
+#toggleBtn:hover {
+  background-color: #b34a08;
+}
+
+#toggleBtn:active {
+  transform: scale(0.97);
+}
+
+#toggleBtn:focus-visible {
+  outline: 3px solid #b3d7ff;
+  outline-offset: 2px;
+}
+
+/* When disabled state is applied via JS */
+#toggleBtn.disabled {
+  background-color: #3a3b50;
+  color: #7a7b99;
+  cursor: not-allowed;
+}
+
+#toggleBtn.disabled:hover {
+  background-color: #3a3b50;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  font-family: system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  background-color: #ff6200e4;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
 .pill:hover {
   background-color: #b34a08;
 }
 
-/* Focus State for Web Accessibility */
 .pill:focus-visible {
   outline: 3px solid #b3d7ff;
 }
 
-/* Active Press State */
 .pill:active {
   transform: scale(0.97);
 }
